@@ -1,0 +1,45 @@
+const int hot > 27; //set hot parameter  #this temperature can adjust to better results
+Some materials that we need:
+Arduino board
+Breadboard
+Jumper wires
+3 220Ω resistors (red-red-brown)
+3 LEDs for this moment we select red, blue and green
+A temperature sensor in this case LM35
+
+CODE EXAMPLE 
+const int cold = 25; //set cold parameter #this temperature can adjust to better results
+void setup() {
+  pinMode(A2, INPUT); //sensor
+  pinMode(2, OUTPUT); //blue
+  pinMode(3, OUTPUT); //green
+  pinMode(4, OUTPUT); //red
+  Serial.begin(9600);
+}
+void loop() {
+  int sensor = analogRead(A2);
+  float voltage = (sensor / 1024.0) * 5.0;
+  float tempC = (voltage - .5) * 100;
+  float tempF = (tempC * 1.8) + 32;
+  Serial.print("temp: ");
+  Serial.print(tempF);
+  if (tempF < cold) { //cold
+    digitalWrite(2, HIGH);
+    digitalWrite(3, LOW);
+    digitalWrite(4, LOW);
+    Serial.println(" It's Cold.");
+  }
+  else if (tempF >= hot) { //hot
+    digitalWrite(2, LOW);
+    digitalWrite(3, LOW);
+    digitalWrite(4, HIGH);
+    Serial.println(" It's Hot.");
+  }
+  else { //fine
+    digitalWrite(2, LOW);
+    digitalWrite(3, HIGH);
+    digitalWrite(4, LOW);
+    Serial.println(" It's Fine.");
+  }
+  delay(10);
+}
